@@ -20,6 +20,9 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     controller.getUser();
     controller.getQuizzes();
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -73,7 +76,6 @@ class _HomePageState extends State<HomePage> {
       return Scaffold(
         body: Center(
           child: CircularProgressIndicator(
-            //TODO: continuar - video 3 - 55 min
             valueColor: AlwaysStoppedAnimation<Color>(AppColors.darkGreen),
           ),
         ),
