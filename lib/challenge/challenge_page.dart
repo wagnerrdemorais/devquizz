@@ -1,3 +1,4 @@
+import 'package:dev_quizz/challenge/widgets/quiz/quiz_widget.dart';
 import 'package:dev_quizz/home/widgets/question_indicator/question_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,9 @@ class _ChallengePageState extends State<ChallengePage> {
         child: SafeArea(
           child: QuestionIndicatorWidget(),
         ),
+      ),
+      body: QuizWidget(
+        title: "O que o Flutter faz em sua totalidade?",
       ),
     );
   }

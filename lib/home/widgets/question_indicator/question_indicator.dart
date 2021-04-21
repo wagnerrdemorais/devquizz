@@ -27,7 +27,6 @@ class QuestionIndicatorWidget extends StatelessWidget {
           SizedBox(
             height: 16,
           ),
-          //TODO: 1h:15
           ProgressIndicatorWidget(value: 0.7),
         ],
       ),
