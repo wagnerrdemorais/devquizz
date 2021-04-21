@@ -6,18 +6,21 @@ import 'package:flutter/material.dart';
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
   @override
-  _State createState() => _State();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _State extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
           children: [
+            SizedBox(
+              height: 16,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -27,7 +30,21 @@ class _State extends State<HomePage> {
                 LevelButtonWidget(label: "Perito"),
               ],
             ),
-            QuizCardWidget(),
+            SizedBox(
+              height: 16,
+            ),
+            Expanded(
+              child: GridView.count(
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                crossAxisCount: 2,
+                children: [
+                  QuizCardWidget(),
+                  QuizCardWidget(),
+                  QuizCardWidget(),
+                ],
+              ),
+            )
           ],
         ),
       ),
