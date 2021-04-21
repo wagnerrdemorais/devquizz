@@ -1,3 +1,6 @@
+import 'package:dev_quizz/core/core.dart';
+import 'package:dev_quizz/home/home_controller.dart';
+import 'package:dev_quizz/home/home_state.dart';
 import 'package:dev_quizz/home/level_button/level_button_widget.dart';
 import 'package:dev_quizz/home/widgets/appbar/app_bar_widget.dart';
 import 'package:dev_quizz/home/widgets/quiz_card/quiz_card_widget.dart';
@@ -10,44 +13,71 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final controller = HomeController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getUser();
+    controller.getQuizzes();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWidget(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                LevelButtonWidget(label: "Fácil"),
-                LevelButtonWidget(label: "Médio"),
-                LevelButtonWidget(label: "Difícil"),
-                LevelButtonWidget(label: "Perito"),
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Expanded(
-              child: GridView.count(
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                crossAxisCount: 2,
+    if (controller.state == HomeState.success) {
+      return Scaffold(
+        appBar: AppBarWidget(
+          user: controller.user!, //! - garante que nao eh null
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  QuizCardWidget(),
-                  QuizCardWidget(),
-                  QuizCardWidget(),
+                  LevelButtonWidget(label: "Fácil"),
+                  LevelButtonWidget(label: "Médio"),
+                  LevelButtonWidget(label: "Difícil"),
+                  LevelButtonWidget(label: "Perito"),
                 ],
               ),
-            )
-          ],
+              SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                child: GridView.count(
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  crossAxisCount: 2,
+                  children: controller.quizzes!
+                      .map(
+                        (e) => QuizCardWidget(
+                          title: e.title,
+                          percent: e.questionAnswered / e.questions.length,
+                          completed:
+                              "${e.questionAnswered}/${e.questions.length}",
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            //TODO: continuar - video 3 - 55 min
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.darkGreen),
+          ),
+        ),
+      );
+    }
   }
 }
