@@ -2,14 +2,17 @@ import 'package:dev_quizz/challenge/challenge_controller.dart';
 import 'package:dev_quizz/challenge/widgets/next_button/next_button.dart';
 import 'package:dev_quizz/challenge/widgets/quiz/quiz_widget.dart';
 import 'package:dev_quizz/home/widgets/question_indicator/question_indicator_widget.dart';
+import 'package:dev_quizz/result/result_page.dart';
 import 'package:dev_quizz/shared/models/question_model.dart';
 import 'package:flutter/material.dart';
 
 class ChallengePage extends StatefulWidget {
   final List<QuestionModel> questions;
+  final String title;
   ChallengePage({
     Key? key,
     required this.questions,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -33,6 +36,13 @@ class _ChallengePageState extends State<ChallengePage> {
         duration: Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
+  }
+
+  void onSelected(bool value) {
+    if (value) {
+      controller.correctRigthAnswers++;
+    }
+    nextPage();
   }
 
   @override
@@ -65,9 +75,7 @@ class _ChallengePageState extends State<ChallengePage> {
         children: widget.questions
             .map(
               (e) => QuizWidget(
-                onChange: () {
-                  nextPage();
-                },
+                onSelected: onSelected,
                 question: e,
               ),
             )
@@ -98,7 +106,16 @@ class _ChallengePageState extends State<ChallengePage> {
                     child: NextButtonWidget.green(
                       label: "Confirmar",
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ResultPage(
+                              title: widget.title,
+                              length: widget.questions.length,
+                              result: controller.correctRigthAnswers,
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
