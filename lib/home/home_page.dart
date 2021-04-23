@@ -1,3 +1,4 @@
+import 'package:dev_quizz/challenge/challenge_page.dart';
 import 'package:dev_quizz/core/core.dart';
 import 'package:dev_quizz/home/home_controller.dart';
 import 'package:dev_quizz/home/home_state.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     if (controller.state == HomeState.success) {
       return Scaffold(
         appBar: AppBarWidget(
-          user: controller.user!, //! - garante que nao eh null
+          user: controller.user!,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -63,6 +64,16 @@ class _HomePageState extends State<HomePage> {
                           percent: e.questionAnswered / e.questions.length,
                           completed:
                               "${e.questionAnswered}/${e.questions.length}",
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChallengePage(
+                                  questions: e.questions,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       )
                       .toList(),
